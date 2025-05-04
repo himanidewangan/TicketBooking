@@ -100,6 +100,37 @@ public class App {
                         System.out.println("Can't book this seat");
                     }
                     break;
+                case 6:
+                    System.out.println("Fetching your bookings...");
+                    List<String> userBookings = userBookingService.loginUser().getTicketsBooked();
+                    if (userBookings.isEmpty()) {
+                        System.out.println("You don't have any bookings to cancel.");
+                        break;
+                    }
+                    int cancelIndex = 1;
+                    for (String bookingId : userBookings) {
+                        System.out.println(cancelIndex + ". Booking ID: " + bookingId);
+                        cancelIndex++;
+                    }
+                    int bookingChoice = scanner.nextInt();
+                    if (bookingChoice < 1 || bookingChoice > userBookings.size()) {
+                        System.out.println("Invalid booking selection.");
+                        break;
+                    }
+                    String bookingIdToCancel = userBookings.get(bookingChoice - 1);
+                    boolean cancelled = userBookingService.cancelBooking(bookingIdToCancel);
+                    if (cancelled) {
+                        System.out.println("Booking canceled successfully.");
+                    } else {
+                    System.out.println("Failed to cancel the booking.");
+                    }
+                    break;
+
+                    
+                case 7:
+                    System.out.println("Thanks for using the Train Booking App. Goodbye!");
+                    break;
+
                 default:
                     break;
             }
